@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSyllabus } from '../context/SyllabusContext';
-import { Trash2, Github, Info, AlertTriangle, Moon, Sun, Check, Download } from 'lucide-react';
+import { Trash2, Github, Info, AlertTriangle, Moon, Sun, Check, Download, Pizza, Globe, Linkedin, Mail } from 'lucide-react';
 import clsx from 'clsx';
 
 const Settings = () => {
@@ -322,6 +322,41 @@ const Settings = () => {
                     </section>
                 )}
 
+                {/* Support & Community (Premium BMC Card) */}
+                <section className="relative overflow-hidden rounded-2xl p-0.5 shadow-lg shadow-amber-500/10 transition-transform hover:scale-[1.01] duration-300">
+                    {/* Gradient Border/Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-orange-500 to-purple-600 animate-gradient-xy"></div>
+
+                    <div className="relative bg-white dark:bg-slate-900 rounded-[14px] p-6 h-full border border-transparent">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div className="flex-1 text-center sm:text-left">
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center justify-center sm:justify-start gap-2">
+                                    <span className="text-amber-500">
+                                        <Pizza size={24} strokeWidth={2.5} />
+                                    </span>
+                                    Fuel the Development
+                                </h2>
+                                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed max-w-md">
+                                    VERTEX is built with passion to help you crack your dream job. If this roadmap helps you land a massive offer, consider buying me a pizza! 🍕
+                                </p>
+                            </div>
+
+                            <a
+                                href="https://www.buymeacoffee.com/akshitkamboz13"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="group relative px-6 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold shadow-lg hover:shadow-amber-500/25 transition-all active:scale-95 flex items-center gap-2 overflow-hidden"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <span className="relative z-10 flex items-center gap-2">
+                                    Buy me a Pizza
+                                    <Pizza size={18} />
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
                 {/* About */}
                 <section className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 transition-colors shadow-sm">
                     <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2 transition-colors">
@@ -333,19 +368,71 @@ const Settings = () => {
                             <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">Version</span>
                             <span className="text-slate-800 dark:text-slate-200 font-mono text-sm transition-colors">v1.2.0 (Beta)</span>
                         </div>
+
                         <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
-                            <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">Source Code</span>
+                            <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">Developer</span>
                             <a
-                                href="https://github.com/akshitkamboz13/Mern-Interview-Prep.git"
+                                href="https://si4k.online"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center gap-1.5 text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm transition-colors"
+                                className="text-indigo-500 dark:text-indigo-400 font-medium text-sm hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
                             >
-                                <Github size={14} />
-                                View on GitHub
+                                Akshit
                             </a>
                         </div>
-                        <div className="pt-2 text-center text-xs text-slate-400 dark:text-slate-500 transition-colors">
+                        <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
+                            <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">
+                                Github Repository
+                            </span>
+                            <a
+                                href="https://github.com/akshitkamboz13/VERTEX-Master-Mern-Stack"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-indigo-500 dark:text-indigo-400 font-medium text-sm hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
+                            >
+                                VERTEX
+                            </a>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
+                            <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">
+                                Report Issue
+                            </span>
+                            <a
+                                href="https://github.com/akshitkamboz13/VERTEX-Master-Mern-Stack/issues"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-indigo-500 dark:text-indigo-400 font-medium text-sm hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
+                            >
+                                github/issues
+                            </a>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
+                            <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">
+                                Privacy Policy
+                            </span>
+                            <Link
+                                to="/privacy"
+                                className="text-indigo-500 dark:text-indigo-400 font-medium text-sm hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
+                            >
+                                Read Policy
+                            </Link>
+                        </div>
+                        <div className="flex justify-center gap-6 py-4">
+                            <a href="https://si4k.online" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-indigo-500 transition-colors" title="Website">
+                                <Globe size={20} />
+                            </a>
+                            <a href="https://linkedin.com/in/akshitkamboz13" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors" title="LinkedIn">
+                                <Linkedin size={20} />
+                            </a>
+                            <a href="https://github.com/akshitkamboz13" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="GitHub">
+                                <Github size={20} />
+                            </a>
+                            <a href="mailto:akshit@si4k.online" className="text-slate-400 hover:text-rose-500 transition-colors" title="Email">
+                                <Mail size={20} />
+                            </a>
+                        </div>
+
+                        <div className="pt-0 text-center text-xs text-slate-400 dark:text-slate-500 transition-colors">
                             Designed for effective MERN Stack preparation.
                         </div>
                     </div>

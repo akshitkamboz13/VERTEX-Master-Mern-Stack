@@ -1,16 +1,110 @@
-# React + Vite
+# VERTEX | Master the MERN Stack 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
+  <img src="public/pwa-512x512.png" alt="Vertex Logo" width="120" height="120" />
+  <h1>VERTEX</h1>
+  <p><strong>The Ultimate MERN Stack Interview Preparation Roadmap & Tracker</strong></p>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  ![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
+  ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)
+  ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=flat&logo=vite&logoColor=white)
+  
+  [**Start Preparation**](https://interview.si4k.online) · [Report Bug](https://github.com/akshitkamboz13/Mern-Interview-Prep/issues) · [Request Feature](https://github.com/akshitkamboz13/Mern-Interview-Prep/issues)
+</div>
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
 
-## React Compiler
+**VERTEX** is a premium, curated, and interactive roadmap designed to help developers master the **MERN Stack** (MongoDB, Express.js, React, Node.js) and ace technical interviews.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Unlike static lists, VERTEX is a **Progressive Web App (PWA)** that tracks your progress, helps you revise with spaced repetition, and provides deep-dive resources for every topic—all wrapped in a stunning, high-performance UI.
 
-## Expanding the ESLint configuration
+## Key Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   **Syllabus Tracker**: A comprehensive checklist covering React, Node.js, System Design, and DSA.
+-   **Revision Queue**: Smart "Spaced Repetition" system that flags topics you haven't reviewed in a while.
+-   **Deep Dives**: One-click integrated search for every topic to find the best resources instantly.
+-   **Premium Themes**:
+    -   **Obsidian**: A deep, OLED-friendly void purple theme.
+    -   **Royal**: Dynamic gold/bronze accents based on your theme.
+    -   **Sunrise/Light**: Clean high-contrast modes for bright environments.
+-   **PWA Support**: Install it on your phone or desktop for an offline-first, native app experience.
+-   **Local Persistence**: Your progress is saved automatically to your device (IndexedDB).
+-   **High Performance**: Built with React 19, Vite, and Tailwind v4 for blazing fast load times.
+
+## Tech Stack
+
+-   **Frontend Framework**: [React 19](https://react.dev/)
+-   **Build Tool**: [Vite](https://vitejs.dev/)
+-   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + `clsx`
+-   **Animations**: [Framer Motion](https://www.framer.com/motion/)
+-   **Icons**: [Lucide React](https://lucide.dev/)
+-   **Typography**: `Cinzel Decorative` (Headers) + `Inter` (Body) + `Outfit` (Headings) + `JetBrains Mono` (Code)
+-   **State/Persistence**: React Context API + [LocalForage](https://github.com/localForage/localForage)
+-   **Routing**: [React Router v7](https://reactrouter.com/)
+
+## Getting Started
+
+### Prerequisites
+
+-   Node.js (v18 or higher)
+-   npm or yarn
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/akshitkamboz13/Mern-Interview-Prep.git
+    cd Mern-Interview-Prep
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Build for production**
+    ```bash
+    npm run build
+    ```
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+## Author
+
+**Akshit Kamboz**
+
+-   Website: [si4k.online](https://si4k.online)
+-   GitHub: [@akshitkamboz13](https://github.com/akshitkamboz13)
+-   LinkedIn: [Akshit Kamboz](https://linkedin.com/in/akshitkamboz13)
+-   Email: [akshit@si4k.online](mailto:akshit@si4k.online)
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by Akshit</p>
+  <a href="https://www.buymeacoffee.com/akshitkamboz13">
+    <img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20pizza&emoji=🍕&slug=akshitkamboz13&button_colour=BD5FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" alt="Buy Me a Pizza" />
+  </a>
+</div>
