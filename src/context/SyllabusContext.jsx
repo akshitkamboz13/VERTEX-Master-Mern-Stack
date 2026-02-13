@@ -370,6 +370,104 @@ export const SyllabusProvider = ({ children }) => {
         };
     };
 
+    // Notification Logic
+    const [notificationSettings, setNotificationSettings] = useState({
+        enabled: false,
+        frequency: 'daily', // 'daily', 'hourly', 'weekly'
+        lastNotified: null
+    });
+
+    useEffect(() => {
+        const loadSettings = async () => {
+            const stored = await localforage.getItem('notificationSettings');
+            if (stored) setNotificationSettings(stored);
+        };
+        loadSettings();
+    }, []);
+
+    useEffect(() => {
+        if (!loading) {
+            localforage.setItem('notificationSettings', notificationSettings).catch(err => console.error(err));
+        }
+    }, [notificationSettings, loading]);
+
+    const requestNotificationPermission = async () => {
+        if (!('Notification' in window)) {
+            alert('This browser does not support desktop notifications');
+            return false;
+        }
+        const permission = await Notification.requestPermission();
+        return permission === 'granted';
+    };
+
+    const sendRandomNotification = () => {
+        if (Notification.permission !== 'granted') return;
+
+        // Filter for learning or pending topics
+        const availableTopics = flatTopics.filter(t => {
+            const status = progress[t.id];
+            return status !== 'Mastered';
+        });
+
+        if (availableTopics.length === 0) return;
+
+        const randomTopic = availableTopics[Math.floor(Math.random() * availableTopics.length)];
+
+        const title = "Ready to learn?";
+        const body = `How about a quick session on "${randomTopic.title}"?`;
+
+        try {
+            new Notification(title, {
+                body,
+                icon: '/pwa-192x192.png', // Ensure icon path is correct
+                tag: 'study-reminder'
+            });
+
+            // Update lastNotified
+            setNotificationSettings(prev => ({ ...prev, lastNotified: Date.now() }));
+        } catch (e) {
+            console.error("Notification failed", e);
+        }
+    };
+
+    const checkNotifications = () => {
+        if (!notificationSettings.enabled || Notification.permission !== 'granted') return;
+
+        const now = Date.now();
+        const last = notificationSettings.lastNotified || 0;
+        let threshold = 0;
+
+        switch (notificationSettings.frequency) {
+            case 'hourly': threshold = 60 * 60 * 1000; break;
+            case 'daily': threshold = 24 * 60 * 60 * 1000; break;
+            case 'weekly': threshold = 7 * 24 * 60 * 60 * 1000; break;
+            default: threshold = 24 * 60 * 60 * 1000;
+        }
+
+        if (now - last > threshold) {
+            sendRandomNotification();
+        }
+    };
+
+    // Check on mount and intervals
+    useEffect(() => {
+        if (loading || flatTopics.length === 0) return;
+
+        const check = () => checkNotifications();
+
+        // Check immediately (delayed slightly to ensure load)
+        const timeout = setTimeout(check, 5000);
+
+        // Check every minute (in case app stays open)
+        const interval = setInterval(check, 60000);
+
+        return () => {
+            clearTimeout(timeout);
+            clearInterval(interval);
+        };
+    }, [notificationSettings, flatTopics, loading, progress]);
+
+
     const contextValue = React.useMemo(() => ({
         syllabus,
         flatTopics,
@@ -404,10 +502,15 @@ export const SyllabusProvider = ({ children }) => {
         isInstallable,
         installApp,
         startUpMode,
-        setStartUpMode
+        setStartUpMode,
+        notificationSettings,
+        setNotificationSettings,
+        requestNotificationPermission,
+        sendRandomNotification // Export for testing
     }), [
         syllabus, flatTopics, progress, effectiveTheme, themeMode, autoType, deviceDark, deviceLight,
-        searchHistory, loading, focusedTopicId, expandedTopics, expansionMode, deepDiveUrl, isInstallable, startUpMode
+        searchHistory, loading, focusedTopicId, expandedTopics, expansionMode, deepDiveUrl, isInstallable, startUpMode,
+        notificationSettings
     ]);
 
     return (

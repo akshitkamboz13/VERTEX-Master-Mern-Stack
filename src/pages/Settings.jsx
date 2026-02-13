@@ -5,7 +5,7 @@ import { Trash2, Github, Info, AlertTriangle, Moon, Sun, Check, Download, Pizza,
 import clsx from 'clsx';
 
 const Settings = () => {
-    const { resetProgress, themeMode, setThemeMode, autoType, setAutoType, deviceDark, setDeviceDark, deviceLight, setDeviceLight, searchHistory, clearHistory, focusTopic, expansionMode, setExpansionMode, openDeepDive, isInstallable, installApp, startUpMode, setStartUpMode } = useSyllabus();
+    const { resetProgress, themeMode, setThemeMode, autoType, setAutoType, deviceDark, setDeviceDark, deviceLight, setDeviceLight, searchHistory, clearHistory, focusTopic, expansionMode, setExpansionMode, openDeepDive, isInstallable, installApp, startUpMode, setStartUpMode, notificationSettings, setNotificationSettings, requestNotificationPermission, sendRandomNotification } = useSyllabus();
 
     // ... (rest of component state)
 
@@ -178,6 +178,75 @@ const Settings = () => {
                                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Automatically take me back to where I was.</p>
                             </div>
                         </label>
+                    </div>
+                </section>
+
+                {/* Notifications */}
+                <section className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 transition-colors shadow-sm">
+                    <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2 transition-colors">
+                        <Rocket size={20} className="text-rose-500 dark:text-rose-400" />
+                        Study Reminders
+                    </h2>
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-slate-800 dark:text-slate-200">Enable Notifications</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Get random topic suggestions to keep you on track.</p>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={notificationSettings.enabled}
+                                    onChange={async (e) => {
+                                        const isEnabled = e.target.checked;
+                                        if (isEnabled) {
+                                            const granted = await requestNotificationPermission();
+                                            if (granted) {
+                                                setNotificationSettings(prev => ({ ...prev, enabled: true }));
+                                            } else {
+                                                alert("Permission denied. Please enable notifications in your browser settings.");
+                                            }
+                                        } else {
+                                            setNotificationSettings(prev => ({ ...prev, enabled: false }));
+                                        }
+                                    }}
+                                />
+                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+
+                        {notificationSettings.enabled && (
+                            <div className="animate-in slide-in-from-top-4 duration-300 space-y-4">
+                                <div>
+                                    <label className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 block">Frequency</label>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {['hourly', 'daily', 'weekly'].map((freq) => (
+                                            <button
+                                                key={freq}
+                                                onClick={() => setNotificationSettings(prev => ({ ...prev, frequency: freq }))}
+                                                className={clsx(
+                                                    "py-2 rounded-lg text-xs font-medium capitalize transition-all border",
+                                                    notificationSettings.frequency === freq
+                                                        ? "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/30"
+                                                        : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                                                )}
+                                            >
+                                                {freq}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => sendRandomNotification()}
+                                    className="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 rounded-lg transition-colors border border-dashed border-indigo-200 dark:border-indigo-800"
+                                >
+                                    <Rocket size={16} />
+                                    Send Test Notification
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </section>
 
