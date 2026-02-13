@@ -10,6 +10,30 @@ const DeepDiveModal = ({ url, onClose }) => {
         };
     }, []);
 
+    // Swipe Down to Close Logic
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientY);
+    };
+
+    const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientY);
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isDownSwipe = distance < -minSwipeDistance; // Top to Bottom: start < end? No. clientY increases downwards.
+        // start = 100, end = 200 (swiped down). distance = 100 - 200 = -100.
+        // isDownSwipe: distance < -50. Correct.
+
+        if (isDownSwipe) {
+            onClose();
+        }
+    };
+
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center pointer-events-none">
@@ -29,15 +53,21 @@ const DeepDiveModal = ({ url, onClose }) => {
                     exit={{ y: "100%", opacity: 0, scale: 0.95 }}
                     transition={{ type: "spring", damping: 25, stiffness: 300 }}
                     className="relative w-full h-[90vh] sm:h-[85vh] sm:w-[90vw] sm:max-w-6xl bg-white dark:bg-slate-900 border-t sm:border border-slate-200 dark:border-slate-700 rounded-t-2xl sm:rounded-xl shadow-2xl flex flex-col pointer-events-auto overflow-hidden"
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
                 >
                     {/* Header */}
-                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 cursor-grab active:cursor-grabbing">
                         <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200 font-semibold">
                             <span className="p-1.5 bg-indigo-100 dark:bg-indigo-500/20 rounded-md text-indigo-600 dark:text-indigo-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                             </span>
                             Deep Dive Browser
                         </div>
+                        {/* Swipe Indicator (Mobile) */}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-2 sm:hidden w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full" />
+
                         <div className="flex items-center gap-2">
                             <a
                                 href={url}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
@@ -31,8 +31,65 @@ const Layout = () => {
     };
     const gradientClass = getBrandGradient();
 
+    // Swipe Logic for Sidebar
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+
+    // Minimum swipe distance
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        setTouchEnd(null); // otherwise the swipe is fired even with usual touch events
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe && isSidebarOpen) {
+            // Swipe Left (Close Sidebar if open) - BUT Sidebar is overlay, usually right-to-left closes it if it's on left?
+            // Sidebar is on Left. 
+            // Swipe Right (L->R): Open
+            // Swipe Left (R->L): Close
+            setIsSidebarOpen(false);
+        }
+        if (isRightSwipe && !isSidebarOpen) {
+            // Swipe Right (Open Sidebar)
+            setIsSidebarOpen(true);
+        }
+        // Also handle closing if open and swipe left
+    };
+
+    // Correct Swipe Logic for Left Sidebar:
+    // Swipe Right (startX < endX) -> Open
+    // Swipe Left (startX > endX) -> Close
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance; // Checked R->L (Close)
+        const isRightSwipe = distance < -minSwipeDistance; // Checked L->R (Open)
+
+        if (isRightSwipe) {
+            setIsSidebarOpen(true);
+        }
+        if (isLeftSwipe) {
+            setIsSidebarOpen(false);
+        }
+    };
+
     return (
-        <div className="flex h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 transition-colors overflow-hidden">
+        <div
+            className="flex h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 transition-colors overflow-hidden"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={handleTouchEnd}
+        >
             {/* Mobile Sidebar Overlay */}
             <AnimatePresence>
                 {isSidebarOpen && (
@@ -58,9 +115,9 @@ const Layout = () => {
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
                 {/* Mobile Header */}
                 <header className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-10">
-                    <span className={clsx("font-bold font-luxury tracking-widest text-lg bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500", gradientClass)}>
+                    <Link to="/" className={clsx("font-bold font-luxury tracking-widest text-lg bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500", gradientClass)}>
                         VERTEX
-                    </span>
+                    </Link>
                     <button
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
