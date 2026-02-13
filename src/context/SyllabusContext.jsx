@@ -96,6 +96,34 @@ export const SyllabusProvider = ({ children }) => {
         initData();
     }, []);
 
+    // Handle Deep Linking (Notification Click)
+    useEffect(() => {
+        if (loading || flatTopics.length === 0) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const focusTopicId = params.get('focusTopic');
+
+        if (focusTopicId) {
+            // Check if topic exists
+            const topic = flatTopics.find(t => t.id === focusTopicId);
+            if (topic) {
+                console.log("Deep linking to topic:", focusTopicId);
+                // Expand parent topics if needed (not strictly required if we just expand the topic itself and having auto-expand logic, 
+                // but usually we want to ensure it's visible. For now, let's just add it to expandedTopics)
+                setExpandedTopics(prev => {
+                    if (!prev.includes(focusTopicId)) return [...prev, focusTopicId];
+                    return prev;
+                });
+
+                // Focus it
+                setFocusedTopicId(focusTopicId);
+
+                // Clean URL
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+        }
+    }, [loading, flatTopics]);
+
     // Calculate Effective Theme
     useEffect(() => {
         const calculateTheme = () => {
@@ -436,7 +464,7 @@ export const SyllabusProvider = ({ children }) => {
             icon: '/pwa-192x192.png',
             tag: 'study-reminder',
             requireInteraction: true,
-            data: { url: '/syllabus' }
+            data: { url: `/syllabus?focusTopic=${randomTopic.id}` }
         };
 
         try {
@@ -453,6 +481,7 @@ export const SyllabusProvider = ({ children }) => {
                     const notif = new Notification(title, options);
                     notif.onclick = () => {
                         window.focus();
+                        window.location.href = `/syllabus?focusTopic=${randomTopic.id}`;
                         notif.close();
                     };
                 }
@@ -461,6 +490,7 @@ export const SyllabusProvider = ({ children }) => {
                 const notif = new Notification(title, options);
                 notif.onclick = () => {
                     window.focus();
+                    window.location.href = `/syllabus?focusTopic=${randomTopic.id}`;
                     notif.close();
                 };
                 console.log("Notification sent via legacy API:", title);
