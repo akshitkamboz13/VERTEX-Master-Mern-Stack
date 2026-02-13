@@ -370,43 +370,48 @@ export const SyllabusProvider = ({ children }) => {
         };
     };
 
+    const contextValue = React.useMemo(() => ({
+        syllabus,
+        flatTopics,
+        progress,
+        theme: effectiveTheme,
+        themeMode,
+        setThemeMode,
+        autoType,
+        setAutoType,
+        deviceDark,
+        setDeviceDark,
+        deviceLight,
+        setDeviceLight,
+        searchHistory,
+        loading,
+        updateStatus,
+        resetProgress,
+        addToHistory,
+        clearHistory,
+        focusedTopicId,
+        focusTopic,
+        getTopicStatus,
+        getStats,
+        toggleTopicExpansion,
+        expandTopics,
+        isTopicExpanded,
+        expansionMode,
+        setExpansionMode,
+        deepDiveUrl,
+        setDeepDiveUrl,
+        openDeepDive,
+        isInstallable,
+        installApp,
+        startUpMode,
+        setStartUpMode
+    }), [
+        syllabus, flatTopics, progress, effectiveTheme, themeMode, autoType, deviceDark, deviceLight,
+        searchHistory, loading, focusedTopicId, expandedTopics, expansionMode, deepDiveUrl, isInstallable, startUpMode
+    ]);
+
     return (
-        <SyllabusContext.Provider value={{
-            syllabus,
-            flatTopics,
-            progress,
-            theme: effectiveTheme, // Backward compatibility for consumers using 'theme'
-            themeMode,
-            setThemeMode,
-            autoType,
-            setAutoType,
-            deviceDark,
-            setDeviceDark,
-            deviceLight,
-            setDeviceLight,
-            searchHistory,
-            loading,
-            updateStatus,
-            resetProgress,
-            addToHistory,
-            clearHistory,
-            focusedTopicId,
-            focusTopic,
-            getTopicStatus,
-            getStats,
-            toggleTopicExpansion,
-            expandTopics,
-            isTopicExpanded,
-            expansionMode,
-            setExpansionMode,
-            deepDiveUrl,
-            setDeepDiveUrl,
-            openDeepDive,
-            isInstallable,
-            installApp,
-            startUpMode,
-            setStartUpMode
-        }}>
+        <SyllabusContext.Provider value={contextValue}>
             {children}
         </SyllabusContext.Provider>
     );

@@ -74,6 +74,9 @@ export default function Syllabus() {
         );
     }
 
+    const maxResults = 50;
+    const displayedTopics = filteredTopics ? filteredTopics.slice(0, maxResults) : null;
+
     return (
         <div className="max-w-3xl mx-auto px-4 pt-6 pb-20">
             <header className="mb-6">
@@ -112,15 +115,29 @@ export default function Syllabus() {
             <div className="space-y-4">
                 {searchQuery ? (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                            Found {filteredTopics?.length || 0} results
-                        </h3>
-                        {filteredTopics && filteredTopics.length > 0 ? (
-                            <TopicTree data={filteredTopics} />
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Found {filteredTopics?.length || 0} results
+                            </h3>
+                            {filteredTopics?.length > maxResults && (
+                                <span className="text-xs text-amber-500 font-medium">
+                                    Showing top {maxResults}
+                                </span>
+                            )}
+                        </div>
+
+                        {displayedTopics && displayedTopics.length > 0 ? (
+                            <TopicTree data={displayedTopics} />
                         ) : (
                             <div className="text-center py-10 text-slate-500 dark:text-slate-400">
                                 <p>No topics found matching "{searchQuery}"</p>
                             </div>
+                        )}
+
+                        {filteredTopics?.length > maxResults && (
+                            <p className="text-center text-xs text-slate-400 mt-2">
+                                Keep typing to refine your search
+                            </p>
                         )}
                     </div>
                 ) : (
