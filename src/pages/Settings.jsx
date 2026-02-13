@@ -482,7 +482,7 @@ const Settings = () => {
                     <div className="space-y-4">
                         <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
                             <span className="text-slate-500 dark:text-slate-400 text-sm transition-colors">Version</span>
-                            <span className="text-slate-800 dark:text-slate-200 font-mono text-sm transition-colors">v1.3.0</span>
+                            <span className="text-slate-800 dark:text-slate-200 font-mono text-sm transition-colors">v1.4.1</span>
                         </div>
 
                         <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700/50">
