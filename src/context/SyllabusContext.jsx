@@ -400,8 +400,22 @@ export const SyllabusProvider = ({ children }) => {
         return permission === 'granted';
     };
 
-    const sendRandomNotification = () => {
-        if (Notification.permission !== 'granted') return;
+    const sendRandomNotification = async () => {
+        console.log("Attempting to send notification...");
+
+        if (!('Notification' in window)) {
+            alert("This browser does not support desktop notifications");
+            return;
+        }
+
+        if (Notification.permission === 'default') {
+            await Notification.requestPermission();
+        }
+
+        if (Notification.permission !== 'granted') {
+            alert("Notification permission is not granted. Please enable it in your browser settings.");
+            return;
+        }
 
         // Filter for learning or pending topics
         const availableTopics = flatTopics.filter(t => {
@@ -409,7 +423,10 @@ export const SyllabusProvider = ({ children }) => {
             return status !== 'Mastered';
         });
 
-        if (availableTopics.length === 0) return;
+        if (availableTopics.length === 0) {
+            alert("Wow! You've mastered everything! Nothing to remind you about.");
+            return;
+        }
 
         const randomTopic = availableTopics[Math.floor(Math.random() * availableTopics.length)];
 
@@ -417,16 +434,24 @@ export const SyllabusProvider = ({ children }) => {
         const body = `How about a quick session on "${randomTopic.title}"?`;
 
         try {
-            new Notification(title, {
+            const notif = new Notification(title, {
                 body,
-                icon: '/pwa-192x192.png', // Ensure icon path is correct
-                tag: 'study-reminder'
+                icon: '/pwa-192x192.png',
+                tag: 'study-reminder',
+                requireInteraction: true
             });
+
+            notif.onclick = () => {
+                window.focus();
+                notif.close();
+            };
 
             // Update lastNotified
             setNotificationSettings(prev => ({ ...prev, lastNotified: Date.now() }));
+            console.log("Notification sent:", title);
         } catch (e) {
             console.error("Notification failed", e);
+            alert("Failed to send notification. Error: " + e.message);
         }
     };
 
