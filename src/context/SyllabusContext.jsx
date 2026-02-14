@@ -44,7 +44,7 @@ export const SyllabusProvider = ({ children }) => {
                     data = await response.json();
 
                     // Cache it for offline use (redundancy to SW)
-                    localforage.setItem('cachedSyllabus', data).catch(e => console.error("Failed to cache syllabus", e));
+                    await localforage.setItem('cachedSyllabus', data);
                 } catch (networkError) {
                     console.warn("Network Fetch failed, trying local cache", networkError);
                     data = await localforage.getItem('cachedSyllabus');
